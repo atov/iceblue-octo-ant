@@ -1,3 +1,49 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+bintray {
+    user = 'aetorresv'
+    key = '157ba8f9499157e290fdbf2ad1791ccd6445fe09'
+    //configurations = ['deployables'] //When uploading configuration files
+
+    // - OR -
+    //publications = ['AppBaseUtils'] //When uploading Maven-based publication files
+    // - AND/OR -
+    filesSpec { //When uploading any arbitrary files ('filesSpec' is a standard Gradle CopySpec)
+        from 'arbitrary-files'
+        into 'standalone_files/level1'
+        rename '(.+)\\.(.+)', '$1-suffix.$2'
+    }
+    dryRun = false //Whether to run this as dry-run, without deploying
+    publish = true //If version should be auto published after an upload
+    //Package configuration. The plugin will use the repo and name properties to check if the package already exists. In that case, there's no need to configure the other package properties (like userOrg, desc, etc).
+    dryRun = false //Whether to run this as dry-run, without deploying
+    publish = true //If version should be auto published after an upload
+    pkg {
+        repo = 'AppBaseUtils'
+        name = 'AppBaseUtils'
+        //name = 'com.iceblue.appbaseutils'
+        userOrg = 'icebluetower' //An optional organization name when the repo belongs to one of the user's orgs
+        desc = 'what a fantastic package indeed!'
+        websiteUrl = 'https://github.com/atov/iceblue-octo-ant'
+        issueTrackerUrl = 'https://github.com/atov/iceblue-octo-ant/issues'
+        vcsUrl = 'https://github.com/atov/iceblue-octo-ant.git'
+        licenses = ['Apache-2.0']
+        labels = ['gear', 'gore', 'gorilla']
+        publicDownloadNumbers = true
+        attributes= ['a': ['ay1', 'ay2'], 'b': ['bee'], c: 'cee'] //Optional package-level attributes
+        //Optional version descriptor
+        version {
+            name = '0.1-Beta' //Bintray logical version name
+            desc = 'semilla, version inicial para probar'
+            vcsTag = '0.1.0'
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+            //Optional version-level attributes
+        }
+    }
+
+}
+
+
 apply plugin: 'com.android.application'
 
 android {
@@ -33,6 +79,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
+
+
 
     /* util libs*/
     compile 'org.projectlombok:lombok:0.12.0'
